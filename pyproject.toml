@@ -10,6 +10,9 @@ packages = [{include = "chatgpt_fastapi"}]
 python = "^3.10"
 fastapi = "^0.91.0"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
+python-dotenv = "^0.21.1"
+requests = "^2.28.2"
+openai = "^0.26.5"
 
 
 [tool.poetry.group.dev.dependencies]
