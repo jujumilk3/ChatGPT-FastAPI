@@ -1,6 +1,22 @@
 from fastapi import Body, FastAPI
 
-app = FastAPI()
+from app.util import Singleton, chat, init_openai
+from app.config import PROJECT_NAME
+
+
+class AppCreator(metaclass=Singleton):
+    def __init__(self):
+        init_openai()
+
+        self.app = FastAPI(
+            title=PROJECT_NAME,
+            openapi_url=f"/openapi.json",
+            version="0.0.1",
+        )
+
+
+app_creator = AppCreator()
+app = app_creator.app
 
 
 @app.get("/")
@@ -10,5 +26,5 @@ def home():
 
 @app.post("/q")
 def question(q: str = Body(..., embed=True, description="Question")):
-    print(q)
-    return q
+    response = chat(q)
+    return response

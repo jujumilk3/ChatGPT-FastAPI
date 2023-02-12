@@ -20,7 +20,7 @@ def init_openai():
 # https://platform.openai.com/docs/models/gpt-3
 # supported text completion models
 # text-davinci-003, text-curie-001, text-babbage-001, text-ada-001
-def chat(
+def request_test_completion(
     prompt: str,
     *,
     model: str = "text-davinci-003",
@@ -47,6 +47,11 @@ def chat(
         frequency_penalty=frequency_penalty,
     )
     return response
+
+
+def chat(prompt: str):
+    response = request_test_completion(prompt)
+    return response.choices[0].text.strip("\n")
 
 
 if __name__ == "__main__":
