@@ -1,7 +1,7 @@
 from fastapi import Body, FastAPI
 
-from app.util import Singleton, chat, init_openai
 from app.config import PROJECT_NAME
+from app.util import Singleton, chat, init_openai
 
 
 class AppCreator(metaclass=Singleton):
