@@ -23,6 +23,9 @@ jobs:
         id: git-check
         run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
 
+      - name: debug
+        run: echo ${{ github.repository }}
+
       - name: Push changes
         if: steps.git-check.outputs.modified == 'true'
         run: |
