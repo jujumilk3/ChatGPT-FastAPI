@@ -1,4 +1,5 @@
 import openai
+
 from app.config import OPENAI_API_KEY, ORGANIZATION_ID
 
 

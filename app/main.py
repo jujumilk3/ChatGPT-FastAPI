@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Body
+from fastapi import Body, FastAPI
 
 app = FastAPI()
 
@@ -9,10 +9,6 @@ def home():
 
 
 @app.post("/q")
-def question(
-    q: str = Body(
-        ...,
-        embed=True, description="Question")
-):
+def question(q: str = Body(..., embed=True, description="Question")):
     print(q)
     return q
