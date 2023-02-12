@@ -10,7 +10,9 @@ def home():
 
 @app.post("/q")
 def question(
-    q: str = Body(..., embed=True, description="Question")
+    q: str = Body(
+        ...,
+        embed=True, description="Question")
 ):
     print(q)
     return q
