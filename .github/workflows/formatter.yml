@@ -28,6 +28,11 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'noreply@github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git commit -am "Automated fixes"
-          git push
+
+      - name: Push changes
+        if: steps.git-check.outputs.modified == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
