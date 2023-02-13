@@ -1,6 +1,7 @@
 import openai
 
 from app.config import OPENAI_API_KEY, ORGANIZATION_ID
+from fastapi import HTTPException
 
 
 class Singleton(type):
@@ -34,19 +35,22 @@ def request_test_completion(
     frequency_penalty: float = 0,  # -2.0 ~ 2.0
 ):
     # https://platform.openai.com/docs/api-reference/completions/create#completions/create-model
-    response = openai.Completion.create(
-        model=model,
-        prompt=prompt,
-        suffix=suffix,
-        max_tokens=max_tokens,
-        temperature=temperature,
-        top_p=top_p,
-        echo=echo,
-        stop=stop,
-        presence_penalty=presence_penalty,
-        frequency_penalty=frequency_penalty,
-    )
-    return response
+    try:
+        response = openai.Completion.create(
+            model=model,
+            prompt=prompt,
+            suffix=suffix,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            top_p=top_p,
+            echo=echo,
+            stop=stop,
+            presence_penalty=presence_penalty,
+            frequency_penalty=frequency_penalty,
+        )
+        return response
+    except openai.error.AuthenticationError as e:
+        raise HTTPException(status_code=403, detail=str(e))
 
 
 def chat(prompt: str):
