@@ -1,7 +1,7 @@
 from fastapi import Body, FastAPI
 
 from app.config import PROJECT_NAME
-from app.util import Singleton, chat, init_openai
+from app.util import Singleton, chat, init_openai, Question, chat_with_option
 
 
 class AppCreator(metaclass=Singleton):
@@ -28,3 +28,8 @@ def home():
 def question(q: str = Body(..., embed=True, description="Question")):
     response = chat(q)
     return response
+
+
+@app.post("/qo")
+def question_with_options(q: Question):
+    return chat_with_option(q)

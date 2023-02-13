@@ -1,5 +1,8 @@
+from enum import Enum
+
 import openai
-from fastapi import HTTPException
+from fastapi import HTTPException, status
+from pydantic import BaseModel, Field
 
 from app.config import OPENAI_API_KEY, ORGANIZATION_ID
 
@@ -13,6 +16,29 @@ class Singleton(type):
         return cls._instances[cls]
 
 
+class TextCompletionModels(str, Enum):
+    text_davinci_003 = "text-davinci-003"
+    text_curie_001 = "text-curie-001"
+    text_babbage_001 = "text-babbage-001"
+    text_ada_001 = "text-ada-001"
+
+    def __str__(self):
+        return str(self.value)
+
+
+class Question(BaseModel):
+    prompt: str = Field(..., description="Prompt", example="Hello, are you there?")
+    model: TextCompletionModels = Field("text-davinci-003", description="Model", example="text-davinci-003")
+    suffix: str = Field(None, description="Suffix", example="Hello, are you there?")
+    max_tokens: int = Field(150, description="Max tokens", example=150)
+    temperature: float = Field(1.0, description="Temperature", example=1.0)
+    top_p: float = Field(1, description="Top p", example=1)
+    echo: bool = Field(False, description="Echo", example=False)
+    stop: list[str] = Field(None, description="Stop", example=None)
+    presence_penalty: float = Field(0, description="Presence penalty", example=0)
+    frequency_penalty: float = Field(0, description="Frequency penalty", example=0)
+
+
 def init_openai():
     openai.api_key = OPENAI_API_KEY
     openai.organization = ORGANIZATION_ID
@@ -21,7 +47,7 @@ def init_openai():
 # https://platform.openai.com/docs/models/gpt-3
 # supported text completion models
 # text-davinci-003, text-curie-001, text-babbage-001, text-ada-001
-def request_test_completion(
+def request_text_completion(
     prompt: str,
     *,
     model: str = "text-davinci-003",
@@ -50,12 +76,19 @@ def request_test_completion(
         )
         return response
     except openai.error.AuthenticationError as e:
-        raise HTTPException(status_code=403, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
 def chat(prompt: str):
-    response = request_test_completion(prompt)
-    return response.choices[0].text.strip("\n")
+    response = request_text_completion(prompt)
+    return response.choices[0].text
+
+
+def chat_with_option(q: Question):
+    response = request_text_completion(**q.dict(exclude_none=True))
+    return response.choices[0].text
 
 
 if __name__ == "__main__":
