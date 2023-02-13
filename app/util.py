@@ -1,7 +1,7 @@
 import openai
+from fastapi import HTTPException
 
 from app.config import OPENAI_API_KEY, ORGANIZATION_ID
-from fastapi import HTTPException
 
 
 class Singleton(type):
