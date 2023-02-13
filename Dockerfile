@@ -7,7 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 
 RUN pip install poetry
-COPY poetry.lock pyproject.toml /app/
+COPY poetry.lock pyproject.toml .env /app/
 RUN poetry install -n
 
 COPY app /app/app
