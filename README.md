@@ -10,7 +10,8 @@ OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
 `docker build -t chatgpt-fastapi .`  or   
 `docker pull jujumilk3/chatgpt-fastapi`  
   
-`docker run -d -p 8000:8000 --env-file .env chatgpt-fastapi`
+`docker run -d -p 8000:8000 --env-file .env chatgpt-fastapi` or  
+`docker run -d -p 8000:8000 --env-file .env jujumilk3/chatgpt-fastapi`
 
 ## Reference
 1. OpenAI request pricing table https://openai.com/api/pricing/
