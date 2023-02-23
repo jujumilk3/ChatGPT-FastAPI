@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "chatgpt-fastapi"
+name = "fastapi-gpt3"
 version = "0.1.0"
 description = ""
 authors = ["jujumilk3 <jujumilk3@gmail.com>"]

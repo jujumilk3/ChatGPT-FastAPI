@@ -1,4 +1,4 @@
-# ChatGPT-FastAPI
+# fastapi-gpt3
 
 ## Deployment
 ```dotenv
